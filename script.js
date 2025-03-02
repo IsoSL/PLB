@@ -390,7 +390,7 @@ function showAnimation(type) {
                     40% { top: 60%; left: 50%; } /* First bounce in neutral zone */
                     60% { top: 30%; left: 65%; }
                     80% { top: 60%; left: 80%; } /* Second bounce in team B area - point scored */
-                    100% { top: 60%; left: 80%; opacity: 0; }
+                    100% { top: 60%; left: 80%; }
                 }
                 
                 @keyframes teamAThrow {
