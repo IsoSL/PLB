@@ -71,43 +71,49 @@ const animations = {
         <div class="animation-scene">
             <div class="court-animation">
                 <div class="team-area team-a">Server</div>
-                <div class="neutral-area"></div>
-                <div class="neutral-area"></div>
+                <div class="neutral-area neutral-1">Neutral</div>
+                <div class="neutral-area neutral-2">Neutral</div>
                 <div class="team-area team-b">Receiver</div>
             </div>
             <div class="ball"></div>
-            <div class="player server"></div>
-            <div class="player receiver"></div>
-            <div class="animation-text">Server hits ball to bounce in receiver's area</div>
+            <div class="player server-1"></div>
+            <div class="player server-2"></div>
+            <div class="player receiver-1"></div>
+            <div class="player receiver-2"></div>
+            <div class="animation-text">Server hits ball to bounce in nearest neutral area first</div>
         </div>
     `,
     rally: `
         <div class="animation-scene">
             <div class="court-animation">
                 <div class="team-area team-a">Team A</div>
-                <div class="neutral-area"></div>
-                <div class="neutral-area"></div>
+                <div class="neutral-area neutral-1">Neutral</div>
+                <div class="neutral-area neutral-2">Neutral</div>
                 <div class="team-area team-b">Team B</div>
             </div>
             <div class="ball rally"></div>
-            <div class="player team-a-player"></div>
-            <div class="player team-b-player"></div>
-            <div class="animation-text">Ball must bounce once before returning</div>
+            <div class="player team-a-player1"></div>
+            <div class="player team-a-player2"></div>
+            <div class="player team-b-player1"></div>
+            <div class="player team-b-player2"></div>
+            <div class="animation-text">Ball must bounce in neutral zone before opponent can hit it</div>
         </div>
     `,
     scoring: `
         <div class="animation-scene">
             <div class="court-animation">
                 <div class="team-area team-a">Team A</div>
-                <div class="neutral-area"></div>
-                <div class="neutral-area"></div>
+                <div class="neutral-area neutral-1">Neutral</div>
+                <div class="neutral-area neutral-2">Neutral</div>
                 <div class="team-area team-b">Team B</div>
             </div>
             <div class="ball scoring"></div>
-            <div class="player team-a-player"></div>
-            <div class="player team-b-player"></div>
+            <div class="player team-a-player1"></div>
+            <div class="player team-a-player2"></div>
+            <div class="player team-b-player1"></div>
+            <div class="player team-b-player2"></div>
             <div class="score">+1 Point!</div>
-            <div class="animation-text">Score when ball bounces twice before opponent hits it</div>
+            <div class="animation-text">Score when ball bounces twice after hitting neutral zone</div>
         </div>
     `
 };
@@ -223,127 +229,198 @@ function showAnimation(type) {
     `;
     
     // Add additional CSS specific to animation types
-    switch(type) {
-        case 'serve':
-            style.textContent += `
-                .ball {
-                    top: 40%;
-                    left: 20%;
-                    animation: serveBall 3s infinite;
-                }
-                
-                .server {
-                    bottom: 50px;
-                    left: 50px;
-                    animation: serverMove 3s infinite;
-                }
-                
-                .receiver {
-                    bottom: 50px;
-                    right: 50px;
-                }
-                
-                @keyframes serveBall {
-                    0% { top: 40%; left: 20%; }
-                    25% { top: 30%; left: 50%; }
-                    50% { top: 60%; left: 80%; }
-                    75% { top: 30%; left: 50%; }
-                    100% { top: 40%; left: 20%; }
-                }
-                
-                @keyframes serverMove {
-                    0% { transform: translateY(0); }
-                    15% { transform: translateY(-20px); }
-                    30% { transform: translateY(0); }
-                    100% { transform: translateY(0); }
-                }
-            `;
-            break;
-        case 'rally':
-            style.textContent += `
-                .ball.rally {
-                    animation: rallyBall 4s infinite;
-                }
-                
-                .team-a-player {
-                    bottom: 50px;
-                    left: 50px;
-                    animation: teamAMove 4s infinite;
-                }
-                
-                .team-b-player {
-                    bottom: 50px;
-                    right: 50px;
-                    animation: teamBMove 4s infinite;
-                }
-                
-                @keyframes rallyBall {
-                    0% { top: 40%; left: 20%; }
-                    15% { top: 30%; left: 50%; }
-                    30% { top: 60%; left: 80%; }
-                    45% { top: 30%; left: 80%; }
-                    50% { top: 60%; left: 80%; }
-                    65% { top: 30%; left: 50%; }
-                    80% { top: 60%; left: 20%; }
-                    95% { top: 30%; left: 20%; }
-                    100% { top: 40%; left: 20%; }
-                }
-                
-                @keyframes teamAMove {
-                    0% { transform: translateX(0); }
-                    15% { transform: translateX(20px); }
-                    65% { transform: translateX(40px); }
-                    80% { transform: translateX(0); }
-                    100% { transform: translateX(0); }
-                }
-                
-                @keyframes teamBMove {
-                    30% { transform: translateX(0); }
-                    45% { transform: translateX(-20px); }
-                    50% { transform: translateX(0); }
-                    100% { transform: translateX(0); }
-                }
-            `;
-            break;
-        case 'scoring':
-            style.textContent += `
-                .ball.scoring {
-                    animation: scoringBall 3s infinite;
-                }
-                
-                .team-a-player {
-                    bottom: 50px;
-                    left: 50px;
-                }
-                
-                .team-b-player {
-                    bottom: 50px;
-                    right: 50px;
-                    animation: missedBall 3s infinite;
-                }
-                
-                .score {
-                    top: 50%;
-                    right: 80px;
-                }
-                
-                @keyframes scoringBall {
-                    0% { top: 40%; left: 20%; }
-                    25% { top: 30%; left: 50%; }
-                    50% { top: 60%; left: 80%; opacity: 1; }
-                    75% { top: 60%; left: 80%; opacity: 1; }
-                    100% { top: 60%; left: 80%; opacity: 0; }
-                }
-                
-                @keyframes missedBall {
-                    0% { transform: translateX(0); }
-                    40% { transform: translateX(-30px); }
-                    60% { transform: translateX(-30px) rotate(10deg); }
-                    80% { transform: translateX(0) rotate(0); }
-                    100% { transform: translateX(0); }
-                }
-            `;
-            break;
+// For the serve case:
+case 'serve':
+    style.textContent += `
+        .ball {
+            top: 40%;
+            left: 20%;
+            animation: serveBall 4s infinite;
+        }
+        
+        .server-1 {
+            bottom: 50px;
+            left: 30px;
+            animation: serverMove 4s infinite;
+        }
+        
+        .server-2 {
+            bottom: 50px;
+            left: 70px;
+        }
+        
+        .receiver-1 {
+            bottom: 50px;
+            right: 30px;
+        }
+        
+        .receiver-2 {
+            bottom: 50px;
+            right: 70px;
+        }
+        
+        @keyframes serveBall {
+            0% { top: 40%; left: 20%; }
+            20% { top: 30%; left: 35%; }
+            40% { top: 60%; left: 50%; } /* Bounce in neutral zone */
+            60% { top: 40%; left: 65%; }
+            80% { top: 60%; left: 80%; } /* Second bounce in receiver area */
+            100% { top: 40%; left: 20%; }
+        }
+        
+        @keyframes serverMove {
+            0% { transform: translateY(0); }
+            15% { transform: translateY(-20px); }
+            30% { transform: translateY(0); }
+            100% { transform: translateY(0); }
+        }
+    `;
+    break;
+
+// For the rally case:
+case 'rally':
+    style.textContent += `
+        .ball.rally {
+            animation: rallyBall 6s infinite;
+        }
+        
+        .team-a-player1 {
+            bottom: 50px;
+            left: 30px;
+            animation: teamA1Move 6s infinite;
+        }
+        
+        .team-a-player2 {
+            bottom: 50px;
+            left: 70px;
+            animation: teamA2Move 6s infinite;
+        }
+        
+        .team-b-player1 {
+            bottom: 50px;
+            right: 30px;
+            animation: teamB1Move 6s infinite;
+        }
+        
+        .team-b-player2 {
+            bottom: 50px;
+            right: 70px;
+            animation: teamB2Move 6s infinite;
+        }
+        
+        @keyframes rallyBall {
+            0% { top: 60%; left: 20%; }
+            10% { top: 30%; left: 35%; }
+            20% { top: 60%; left: 50%; } /* Bounce in first neutral zone */
+            30% { top: 30%; left: 80%; }
+            40% { top: 60%; left: 80%; } /* Bounce in team B area */
+            50% { top: 30%; left: 65%; }
+            60% { top: 60%; left: 50%; } /* Bounce in second neutral zone */
+            70% { top: 30%; left: 35%; }
+            80% { top: 60%; left: 20%; } /* Bounce in team A area */
+            90% { top: 30%; left: 20%; }
+            100% { top: 60%; left: 20%; }
+        }
+        
+        @keyframes teamA1Move {
+            0% { transform: translateX(0); }
+            10% { transform: translateX(20px); }
+            70% { transform: translateX(40px); }
+            80% { transform: translateX(0); }
+            100% { transform: translateX(0); }
+        }
+        
+        @keyframes teamA2Move {
+            0% { transform: translateX(0); }
+            75% { transform: translateX(-20px); }
+            85% { transform: translateX(0); }
+            100% { transform: translateX(0); }
+        }
+        
+        @keyframes teamB1Move {
+            30% { transform: translateX(0); }
+            40% { transform: translateX(-20px); }
+            50% { transform: translateX(0); }
+            100% { transform: translateX(0); }
+        }
+        
+        @keyframes teamB2Move {
+            20% { transform: translateX(0); }
+            35% { transform: translateX(20px); }
+            45% { transform: translateX(0); }
+            100% { transform: translateX(0); }
+        }
+    `;
+    break;
+
+// For the scoring case:
+case 'scoring':
+    style.textContent += `
+        .ball.scoring {
+            animation: scoringBall 4s infinite;
+        }
+        
+        .team-a-player1 {
+            bottom: 50px;
+            left: 30px;
+        }
+        
+        .team-a-player2 {
+            bottom: 50px;
+            left: 70px;
+            animation: teamAThrow 4s infinite;
+        }
+        
+        .team-b-player1 {
+            bottom: 50px;
+            right: 30px;
+            animation: missedBall 4s infinite;
+        }
+        
+        .team-b-player2 {
+            bottom: 50px;
+            right: 70px;
+            animation: missedBall2 4s infinite;
+        }
+        
+        .score {
+            top: 50%;
+            right: 80px;
+        }
+        
+        @keyframes scoringBall {
+            0% { top: 40%; left: 20%; }
+            20% { top: 30%; left: 35%; }
+            40% { top: 60%; left: 50%; } /* First bounce in neutral zone */
+            60% { top: 30%; left: 65%; }
+            80% { top: 60%; left: 80%; } /* Second bounce in team B area - point scored */
+            100% { top: 60%; left: 80%; opacity: 0; }
+        }
+        
+        @keyframes teamAThrow {
+            0% { transform: translateY(0); }
+            15% { transform: translateY(-15px); }
+            30% { transform: translateY(0); }
+            100% { transform: translateY(0); }
+        }
+        
+        @keyframes missedBall {
+            0% { transform: translateX(0); }
+            40% { transform: translateX(-25px); }
+            60% { transform: translateX(-25px) rotate(5deg); }
+            80% { transform: translateX(0) rotate(0); }
+            100% { transform: translateX(0); }
+        }
+        
+        @keyframes missedBall2 {
+            0% { transform: translateX(0); }
+            40% { transform: translateX(25px); }
+            60% { transform: translateX(25px) rotate(-5deg); }
+            80% { transform: translateX(0) rotate(0); }
+            100% { transform: translateX(0); }
+        }
+    `;
+    break;
     }
     
     // Add the style element to the document
