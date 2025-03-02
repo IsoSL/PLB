@@ -137,6 +137,11 @@ scoringDemoBtn.addEventListener('click', () => {
 // Function to handle animation display
 function showAnimation(type) {
     gameplayAnimation.innerHTML = animations[type];
+    // Remove any previous score elements to prevent duplicates
+const existingScore = document.querySelector('.score');
+if (existingScore) {
+    existingScore.remove();
+}
     
     // Remove any existing animation style elements
     const existingStyles = document.querySelectorAll('.animation-styles');
